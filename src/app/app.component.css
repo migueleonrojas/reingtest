@@ -1,0 +1,138 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.navbar{
+    height: 100px;
+    display: flex;
+    box-shadow: 0 1px 4px 0 rgba(0, 21, 41, 0.12);
+    background-image: linear-gradient(to bottom, #ececec -32%, #fff 124%);
+}
+
+.title{
+    margin: auto auto auto 50px;
+    width: 208px;
+    height: 20px;
+    object-fit: contain;
+    font-family: Baskerville;
+    font-size: 28px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    color: #3b3b3b;
+}
+
+/*  */
+
+.buttons{
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    align-content: space-between;
+}
+
+.button {
+    padding: 3px 39px 0 40px;
+    border-radius: 2px;
+    border: solid 1px  #050607;
+    cursor: pointer;
+}
+
+.all span, .faves span{
+    font-family: Roboto;
+    
+    
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.75;
+    letter-spacing: normal;
+    text-align: center;
+    
+}
+
+/*  */
+.selection{
+    display: flex;
+}
+
+select{
+    width: 200px;
+    height: 35px;
+    margin-top: 20px;
+    margin-left: 10px;
+    justify-self: start;
+}
+
+/*  */
+
+.section-news{
+    
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.news{
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+
+.card-new{
+    
+    width: 500px;
+    border-radius: 6px;
+    border: solid 1px #979797;
+    background-color: #fff;
+    display: flex;
+    margin-bottom: auto auto 30px auto;
+   
+}
+
+.favorite{
+    
+    border: solid 1px #606060;
+    background-color: #c0bcbc;
+    
+    display: flex;
+}
+.title-new p {
+    padding: 10px;
+    display: flex;
+    gap: 2px;
+}
+
+.description-new p{
+    font-family: Roboto;
+    padding: 10px;
+}
+
+.favorite p {
+    font-family: Roboto;
+    padding: 15px;
+    margin: auto;
+}
+
+/*  */
+.pagination{
+    font-family: roboto;
+    margin: auto;
+    display: flex;
+    width: 400px;
+    overflow: auto;
+    margin-bottom: 70px;
+}
+
+.page{
+    padding: .5em;
+    background: #efefef;
+    border: 1px solid #333;
+    margin: auto;
+    border-radius: 6px;
+}

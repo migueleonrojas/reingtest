@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'testReign';
+  newSelected:string = 'Select your news';
+
+  changeNews(){
+
+    console.log(this.newSelected);
+
+  }
+
+
+
 }
