@@ -37,7 +37,7 @@
 
     <div class="news">
 
-      <div class="card-new" *ngFor="let filterNew of filterNews">
+      <div class="card-new" *ngFor="let filterNew of filterNews; let ind = index">
         <div class="content">
           <div class="title-new">
             <p>
@@ -49,8 +49,13 @@
             <p>{{filterNew.story_title}}</p>
           </div>
         </div>
-        <div class="favorite">
-          <p><span><img src="../assets/heart-empty.svg" alt=""></span></p>
+        <div class="favorite" >
+          <p>
+            <span>
+              <img *ngIf="filterNew.points === null" src="../assets/heart-empty.svg" alt="" (click) = "addFavorite(filterNew, ind)">
+              <img *ngIf="filterNew.points !== null" src="../assets/heart-full.svg" alt="" (click) = "addFavorite(filterNew, ind)">
+            </span>
+          </p>
         </div>
       </div>
 

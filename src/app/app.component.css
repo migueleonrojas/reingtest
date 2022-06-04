@@ -115,7 +115,12 @@ select{
 .favorite p {
     font-family: Roboto;
     padding: 15px;
+    
     margin: auto;
+}
+
+.favorite img{
+    cursor: pointer;
 }
 
 /*  */
