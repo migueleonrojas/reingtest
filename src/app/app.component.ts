@@ -23,8 +23,6 @@ export class AppComponent {
 
   showAllNews(){
 
-    
-
     if(localStorage.getItem(`${this.newSelected}NewsStorage`) !== null){
       this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
       this.allNewsShow = true;
@@ -37,7 +35,6 @@ export class AppComponent {
 
     this.filterFav = [];
     this.filterNews = [];
-
     let newsToFilterFav =  JSON.parse(localStorage.getItem(`${this.newSelected}NewsStorage`) || "[] ");
 
     newsToFilterFav.forEach((e:any) => {
@@ -48,23 +45,14 @@ export class AppComponent {
     if(this.newSelected !== 'Select your news'){
 
       localStorage.setItem(`${this.newSelected}FavsStorage`, JSON.stringify(this.filterFav));
-
       this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]" );
-      
       this.allNewsShow = false;
       this.favNewsShow = true;
     }
 
-    
-    
-
-    /* this.filterFav  =  JSON.parse( localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]"); */
-
   }
 
   async changeNews(){
-
-    
 
     this.filterNews = [];
 
@@ -84,19 +72,16 @@ export class AppComponent {
       localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.filterNews));
 
     }
-    /* this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]"); */
+    
     if(this.allNewsShow === true && this.favNewsShow === false){
 
       this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
-      
       
     }
     else{
       this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]" );
       
     }
-
-   
 
   }
 
@@ -162,5 +147,4 @@ export class AppComponent {
       
     }
     
-
 }
