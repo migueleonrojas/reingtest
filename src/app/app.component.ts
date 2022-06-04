@@ -11,14 +11,60 @@ export class AppComponent {
   allNews!:any;
   filterNews:any[] = [];
   filterFav:any[] = [];
+  unFilterFav:any[] = [];
   modifiedNews:any[] = [];
+  allNewsShow:boolean = true;
+  favNewsShow:boolean = false;
   constructor(
     private newsService:NewsService
   ){
 
   }
 
+  showAllNews(){
+
+    
+
+    if(localStorage.getItem(`${this.newSelected}NewsStorage`) !== null){
+      this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
+      this.allNewsShow = true;
+      this.favNewsShow = false;
+    }
+    
+  }
+
+  showFavNews(){
+
+    this.filterFav = [];
+    this.filterNews = [];
+
+    let newsToFilterFav =  JSON.parse(localStorage.getItem(`${this.newSelected}NewsStorage`) || "[] ");
+
+    newsToFilterFav.forEach((e:any) => {
+      if(e.points){
+        this.filterFav.push(e);
+      }
+    })
+    if(this.newSelected !== 'Select your news'){
+
+      localStorage.setItem(`${this.newSelected}FavsStorage`, JSON.stringify(this.filterFav));
+
+      this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]" );
+      
+      this.allNewsShow = false;
+      this.favNewsShow = true;
+    }
+
+    
+    
+
+    /* this.filterFav  =  JSON.parse( localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]"); */
+
+  }
+
   async changeNews(){
+
+    
 
     this.filterNews = [];
 
@@ -33,30 +79,35 @@ export class AppComponent {
       }
       
     });
-    if(localStorage.getItem(`${this.newSelected}NewsStorage`) === null){
+    if(localStorage.getItem(`${this.newSelected}NewsStorage`) === null && this.newSelected !== 'Select your news'){
 
       localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.filterNews));
 
     }
-    this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")  ;
-    
+    /* this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]"); */
+    if(this.allNewsShow === true && this.favNewsShow === false){
+
+      this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
+      
+      
+    }
+    else{
+      this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]" );
+      
+    }
+
+   
 
   }
 
 
-  addFavorite(value:Object, i:number){
+  addFavorite(value:Object, i:number, e:Event){
 
-    if(localStorage.getItem(`favStorage`) === null){
-
-      localStorage.setItem(`favStorage`, JSON.stringify([]));
-
-    }
-
-    if(localStorage.getItem(`favStorage`) !== null){
+      e.preventDefault();
 
       this.modifiedNews = [];
 
-      let newsToModify =  JSON.parse(localStorage.getItem(`${this.newSelected}NewsStorage`) || "[] ")
+      let newsToModify =  JSON.parse(localStorage.getItem(`${this.newSelected}NewsStorage`) || "[] ");
 
       newsToModify.forEach( (e:any, index:number) => {
         if(index === i){
@@ -78,8 +129,38 @@ export class AppComponent {
       
     }
 
-  }
+    removeFavorite(value:any, i:number, e:Event){
 
+      e.preventDefault();
 
+      this.unFilterFav = [];
+
+      let newsToModify =  JSON.parse(localStorage.getItem(`${this.newSelected}NewsStorage`) || "[] ");
+
+      newsToModify.forEach((e:any) => {
+
+        if(e.objectID === value.objectID){
+          if(e.points === null){
+            e.points = true; 
+          }
+          else{
+            e.points = null;
+          }
+        }
+
+        this.unFilterFav.push(e);
+
+      })
+
+      localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.unFilterFav));
+
+      this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
+
+      if(this.allNewsShow === false && this.favNewsShow === true){
+        this.showFavNews()
+      }
+      
+    }
+    
 
 }

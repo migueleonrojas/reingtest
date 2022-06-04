@@ -3,10 +3,13 @@
 </nav>
 <main>
 
+  <!-- <span>Allnews? : {{allNewsShow}}</span>
+  <span>Allfavs? : {{favNewsShow}}</span> -->
+
   <div class="all-favs">
     <div class="buttons">
-      <div class="button all"><span>All</span></div>
-      <div class="button faves"><span>My faves</span></div>
+      <div  [className]="allNewsShow ? 'active': 'inactive'" (click) ="showAllNews()"><span>All</span></div>
+      <div  [className]="favNewsShow ? 'active': 'inactive'" (click) ="showFavNews()"><span>My faves</span></div>
     </div>
   </div>
 
@@ -37,7 +40,7 @@
 
     <div class="news">
 
-      <div class="card-new" *ngFor="let filterNew of filterNews; let ind = index">
+      <a class="card-new" *ngFor="let filterNew of filterNews; let ind = index" href="{{filterNew.story_url}}" target="_blank">
         <div class="content">
           <div class="title-new">
             <p>
@@ -52,98 +55,12 @@
         <div class="favorite" >
           <p>
             <span>
-              <img *ngIf="filterNew.points === null" src="../assets/heart-empty.svg" alt="" (click) = "addFavorite(filterNew, ind)">
-              <img *ngIf="filterNew.points !== null" src="../assets/heart-full.svg" alt="" (click) = "addFavorite(filterNew, ind)">
+              <img *ngIf="filterNew.points === null" src="../assets/heart-empty.svg" alt="" (click) = "addFavorite(filterNew, ind, $event)">
+              <img *ngIf="filterNew.points !== null" src="../assets/heart-full.svg" alt="" (click) = "removeFavorite(filterNew, ind, $event)">
             </span>
           </p>
         </div>
-      </div>
-
-      <!-- <div class="card-new">
-        <div class="content">
-          <div class="title-new">
-            <p>
-              <img src="../assets/clock.svg" alt="clock">
-              <span>4 hours ago by author</span>
-            </p>
-          </div>
-          <div class="description-new">
-            <p>All the fundamental React.js concepts, jammed into this single Medium article (updated August 2019)</p>
-          </div>
-        </div>
-        <div class="favorite">
-          <p><span><img src="../assets/heart-empty.svg" alt=""></span></p>
-        </div>
-      </div>
-
-      <div class="card-new">
-        <div class="content">
-          <div class="title-new">
-            <p>
-              <img src="../assets/clock.svg" alt="clock">
-              <span>4 hours ago by author</span>
-            </p>
-          </div>
-          <div class="description-new">
-            <p>All the fundamental React.js concepts, jammed into this single Medium article (updated August 2019)</p>
-          </div>
-        </div>
-        <div class="favorite">
-          <p><span><img src="../assets/heart-empty.svg" alt=""></span></p>
-        </div>
-      </div>
-      
-      <div class="card-new">
-        <div class="content">
-          <div class="title-new">
-            <p>
-              <img src="../assets/clock.svg" alt="clock">
-              <span>4 hours ago by author</span>
-            </p>
-          </div>
-          <div class="description-new">
-            <p>All the fundamental React.js concepts, jammed into this single Medium article (updated August 2019)</p>
-          </div>
-        </div>
-        <div class="favorite">
-          <p><span><img src="../assets/heart-empty.svg" alt=""></span></p>
-        </div>
-      </div>
-
-      <div class="card-new">
-        <div class="content">
-          <div class="title-new">
-            <p>
-              <img src="../assets/clock.svg" alt="clock">
-              <span>4 hours ago by author</span>
-            </p>
-          </div>
-          <div class="description-new">
-            <p>All the fundamental React.js concepts, jammed into this single Medium article (updated August 2019)</p>
-          </div>
-        </div>
-        <div class="favorite">
-          <p><span><img src="../assets/heart-empty.svg" alt=""></span></p>
-        </div>
-      </div>
-
-      <div class="card-new">
-        <div class="content">
-          <div class="title-new">
-            <p>
-              <img src="../assets/clock.svg" alt="clock">
-              <span>4 hours ago by author</span>
-            </p>
-          </div>
-          <div class="description-new">
-            <p>All the fundamental React.js concepts, jammed into this single Medium article (updated August 2019)</p>
-          </div>
-        </div>
-        <div class="favorite">
-          <p><span><img src="../assets/heart-empty.svg" alt=""></span></p>
-        </div>
-      </div> -->
-
+      </a> 
     </div>
 
   </div>

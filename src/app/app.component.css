@@ -42,10 +42,35 @@
     cursor: pointer;
 }
 
+.active{
+    padding: 3px 39px 0 40px;
+    border-radius: 2px;
+    border: solid 1px  #1797ff;
+    cursor: pointer;
+    font-family: Roboto;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.75;
+    letter-spacing: normal;
+    text-align: center;
+    color: #1797ff;
+}
+.inactive{
+    padding: 3px 39px 0 40px;
+    border-radius: 2px;
+    border: solid 1px  #050607;
+    cursor: pointer;
+    font-family: Roboto;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.75;
+    letter-spacing: normal;
+    text-align: center;
+    
+}
+
 .all span, .faves span{
     font-family: Roboto;
-    
-    
     font-stretch: normal;
     font-style: normal;
     line-height: 1.75;
@@ -81,6 +106,12 @@ select{
     flex-wrap: wrap;
     justify-content: center;
     gap: 30px;
+}
+
+a{
+    color: #050607;
+    text-decoration: none;
+    z-index: 100;
 }
 
 
@@ -121,6 +152,7 @@ select{
 
 .favorite img{
     cursor: pointer;
+    z-index: 400;
 }
 
 /*  */
