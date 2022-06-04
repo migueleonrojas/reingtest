@@ -13,8 +13,8 @@
 
   <div class="selection">
 
-    <select name="news" id="cars" [(ngModel)]="newSelected" (change)="changeNews()">
-      <option value="{{newSelected}}">
+    <select name="news"  [(ngModel)]="newSelected" (change)="changeNews()">
+      <option value="Select your news">
         <span>Select your news</span> 
       </option>
 
@@ -37,16 +37,16 @@
 
     <div class="news">
 
-      <div class="card-new">
+      <div class="card-new" *ngFor="let filterNew of filterNews">
         <div class="content">
           <div class="title-new">
             <p>
               <img src="../assets/clock.svg" alt="clock">
-              <span>4 hours ago by author</span>
+              <span>{{filterNew.created_at}} by {{filterNew.author}}</span>
             </p>
           </div>
           <div class="description-new">
-            <p>All the fundamental React.js concepts, jammed into this single Medium article (updated August 2019)</p>
+            <p>{{filterNew.story_title}}</p>
           </div>
         </div>
         <div class="favorite">
@@ -54,7 +54,7 @@
         </div>
       </div>
 
-      <div class="card-new">
+      <!-- <div class="card-new">
         <div class="content">
           <div class="title-new">
             <p>
@@ -137,7 +137,7 @@
         <div class="favorite">
           <p><span><img src="../assets/heart-empty.svg" alt=""></span></p>
         </div>
-      </div>
+      </div> -->
 
     </div>
 

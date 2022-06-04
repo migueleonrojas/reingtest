@@ -96,10 +96,9 @@ select{
 }
 
 .favorite{
-    
+    margin: 0 0 0 auto;
     border: solid 1px #606060;
     background-color: #c0bcbc;
-    
     display: flex;
 }
 .title-new p {
