@@ -10,6 +10,10 @@ export class AppComponent {
   title = 'testReign';
   pageScroll: number = 1;
   pageFinish!:number;
+  pageUltState:number = 1;
+  pageUltStateA:number = 1;
+  pageUltStateR:number = 1;
+  pageUltStateV:number = 1;
   newSelected:string = 'Select your news';
   allNews!:any;
   filterNews:any[] = [];
@@ -39,14 +43,42 @@ export class AppComponent {
     this.document.documentElement.scrollTop = 0;
   }
 
-  async onScrollDown(){
+  async onScrollDown():Promise<any>{
+
+    if(this.pageScroll > this.allNews.nbPages){return false}
     
     if(this.allNewsShow === true){
 
-      this.allNews  = await this.newsService.consultingNews(this.newSelected, this.pageScroll++).toPromise();
+      this.pageScroll =
+      ((JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")).length  === 0)
+        ?this.pageUltState = 1 
+        :(this.newSelected === 'angular')
+          ? this.pageUltStateA = this.pageUltState
+          :(this.newSelected === 'reactjs')
+            ? this.pageUltStateR = this.pageUltState
+            : (this.newSelected === 'vuejs')
+              ? this.pageUltStateV = this.pageUltState
+              : 1
+
+        
+
+      this.allNews  = await this.newsService.consultingNews(this.newSelected, this.pageScroll).toPromise();
+      
+      this.pageUltState = this.allNews.page;
+
+      this.pageUltState++;
+      
+
+      console.clear();
 
       console.log(this.allNews);
-    
+
+      console.log(`elementos de ${this.newSelected}NewsStorage: ${(JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")).length}`);
+
+      console.log(`pagina consultada de ${this.newSelected}NewsStorage: ${this.allNews.page}`);
+      
+      console.log(`ultima pagina consultada de ${this.newSelected}NewsStorage: ${this.pageScroll}`);
+
     this.allNews.hits.forEach((e:any, i:number) => {
       
       if(e.author !== null && e.story_title !== null && e.story_url !== null && e.created_at !== null){
@@ -107,17 +139,33 @@ export class AppComponent {
 
   async changeNews(){
 
-   /*  this.pageScroll = 1; */
+    this.pageScroll =
+    ((JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")).length  === 0)
+      ?this.pageUltState = 1
+      :(this.newSelected === 'angular')
+        ? this.pageUltState = this.pageUltStateA
+        :(this.newSelected === 'reactjs')
+          ? this.pageUltState = this.pageUltStateR
+          : (this.newSelected === 'vuejs')
+            ? this.pageUltState = this.pageUltStateV
+            : 1
+
 
     this.filterNews = [];
 
-    this.allNews  = await this.newsService.consultingNews(this.newSelected, this.pageScroll++).toPromise();
+    this.allNews  = await this.newsService.consultingNews(this.newSelected, this.pageScroll).toPromise();
 
-    this.pageScroll = this.allNews.page;
+    this.pageUltState = this.allNews.page;
+
+    this.pageUltState++;
+
+    console.clear();
 
     console.log(this.allNews);
 
+    console.log(`elementos de ${this.newSelected}NewsStorage: ${(JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")).length}`);
 
+    console.log(`pagina consultada de ${this.newSelected}NewsStorage: ${this.allNews.page}`)
 
     this.allNews.hits.forEach((e:any, i:number) => {
       
