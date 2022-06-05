@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, HostListener, Inject } from '@angular/core';
 import { NewsService } from 'src/services/select-news.services'
 @Component({
   selector: 'app-root',
@@ -7,6 +8,8 @@ import { NewsService } from 'src/services/select-news.services'
 })
 export class AppComponent {
   title = 'testReign';
+  pageScroll: number = 1;
+  pageFinish!:number;
   newSelected:string = 'Select your news';
   allNews!:any;
   filterNews:any[] = [];
@@ -15,9 +18,59 @@ export class AppComponent {
   modifiedNews:any[] = [];
   allNewsShow:boolean = true;
   favNewsShow:boolean = false;
+  showButton:boolean = false;
+  private scrollHeight = 500;
   constructor(
-    private newsService:NewsService
+    private newsService:NewsService,
+    @Inject(DOCUMENT) private document:Document
   ){
+
+  }
+
+  @HostListener('window:scroll')
+  infinityScroll(){
+    const yOffSet   = window.pageYOffset;
+    const scrollTop = this.document.documentElement.scrollTop;
+
+    this.showButton = (yOffSet || scrollTop) > this.scrollHeight;
+  }
+
+  onScrollTop():void{
+    this.document.documentElement.scrollTop = 0;
+  }
+
+  async onScrollDown(){
+    
+    if(this.allNewsShow === true){
+
+      this.allNews  = await this.newsService.consultingNews(this.newSelected, this.pageScroll++).toPromise();
+
+      console.log(this.allNews);
+    
+    this.allNews.hits.forEach((e:any, i:number) => {
+      
+      if(e.author !== null && e.story_title !== null && e.story_url !== null && e.created_at !== null){
+        
+        this.filterNews.push(e);
+
+      }
+      
+    });
+
+    localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.filterNews));
+
+    if(this.allNewsShow === true && this.favNewsShow === false){
+
+      this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
+      
+    }
+    else{
+      this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]" );
+      
+    }
+
+    }
+    
 
   }
 
@@ -54,9 +107,17 @@ export class AppComponent {
 
   async changeNews(){
 
+   /*  this.pageScroll = 1; */
+
     this.filterNews = [];
 
-    this.allNews  = await this.newsService.consultingNews(this.newSelected).toPromise();
+    this.allNews  = await this.newsService.consultingNews(this.newSelected, this.pageScroll++).toPromise();
+
+    this.pageScroll = this.allNews.page;
+
+    console.log(this.allNews);
+
+
 
     this.allNews.hits.forEach((e:any, i:number) => {
       
@@ -115,6 +176,8 @@ export class AppComponent {
     }
 
     removeFavorite(value:any, i:number, e:Event){
+
+      console.log(i);
 
       e.preventDefault();
 

@@ -11,9 +11,9 @@ export class NewsService {
   constructor(private httpClient: HttpClient) { }
 
   //consulta el admin usando nombre y password
-  consultingNews(news:string){
+  consultingNews(news:string, page:Number){
     
-    return this.httpClient.get(`https://hn.algolia.com/api/v1/search_by_date?query=${news}&page=0`);
+    return this.httpClient.get(`https://hn.algolia.com/api/v1/search_by_date?query=${news}&page=${page}`);
     
   }
 
