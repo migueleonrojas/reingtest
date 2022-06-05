@@ -45,13 +45,15 @@ export class AppComponent {
 
   async onScrollDown():Promise<any>{
 
-    if(this.pageScroll > this.allNews.nbPages){return false}
+    if(this.pageScroll >= this.allNews.nbPages){return false}
+
+    
     
     if(this.allNewsShow === true){
 
       this.pageScroll =
       ((JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")).length  === 0)
-        ?this.pageUltState = 1 
+        ?this.pageUltState = 1
         :(this.newSelected === 'angular')
           ? this.pageUltStateA = this.pageUltState
           :(this.newSelected === 'reactjs')
@@ -60,7 +62,7 @@ export class AppComponent {
               ? this.pageUltStateV = this.pageUltState
               : 1
 
-        
+      localStorage.setItem(`${this.newSelected}lastPage`, `${this.pageScroll}`);  
 
       this.allNews  = await this.newsService.consultingNews(this.newSelected, this.pageScroll).toPromise();
       
@@ -79,15 +81,20 @@ export class AppComponent {
       
       console.log(`ultima pagina consultada de ${this.newSelected}NewsStorage: ${this.pageScroll}`);
 
-    this.allNews.hits.forEach((e:any, i:number) => {
+      console.log(`Ultima pagina desde local storage ${this.newSelected}NewsStorage: ${localStorage.getItem(`${this.newSelected}lastPage`)}`);
+
+      await this.allNews.hits.forEach((e:any, i:number) => {
       
       if(e.author !== null && e.story_title !== null && e.story_url !== null && e.created_at !== null){
+        
         
         this.filterNews.push(e);
 
       }
       
     });
+
+    console.log(`${this.allNews.hitsPerPage}`);
 
     localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.filterNews));
 
@@ -139,6 +146,7 @@ export class AppComponent {
 
   async changeNews(){
 
+    
     this.pageScroll =
     ((JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")).length  === 0)
       ?this.pageUltState = 1
@@ -150,7 +158,10 @@ export class AppComponent {
             ? this.pageUltState = this.pageUltStateV
             : 1
 
-
+    this.pageScroll = (localStorage.getItem(`${this.newSelected}lastPage`) !== null)
+      ? Number(localStorage.getItem(`${this.newSelected}lastPage`))
+      : 1;
+      
     this.filterNews = [];
 
     this.allNews  = await this.newsService.consultingNews(this.newSelected, this.pageScroll).toPromise();
@@ -165,7 +176,11 @@ export class AppComponent {
 
     console.log(`elementos de ${this.newSelected}NewsStorage: ${(JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")).length}`);
 
-    console.log(`pagina consultada de ${this.newSelected}NewsStorage: ${this.allNews.page}`)
+    console.log(`pagina consultada de ${this.newSelected}NewsStorage: ${this.allNews.page}`);
+
+    console.log(`Ultima pagina desde local storage ${this.newSelected}NewsStorage: ${localStorage.getItem(`${this.newSelected}lastPage`)}`);
+
+  
 
     this.allNews.hits.forEach((e:any, i:number) => {
       
@@ -178,8 +193,9 @@ export class AppComponent {
     });
     if(localStorage.getItem(`${this.newSelected}NewsStorage`) === null && this.newSelected !== 'Select your news'){
 
+      localStorage.setItem(`${this.newSelected}lastPage`, `${this.pageScroll}`);
       localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.filterNews));
-
+      
     }
     
     if(this.allNewsShow === true && this.favNewsShow === false){
