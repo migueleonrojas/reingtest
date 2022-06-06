@@ -78,18 +78,6 @@ export class AppComponent {
       this.pageUltState++;
       
 
-      console.clear();
-
-      console.log(this.allNews);
-
-      console.log(`elementos de ${this.newSelected}NewsStorage: ${(JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")).length}`);
-
-      console.log(`pagina consultada de ${this.newSelected}NewsStorage: ${this.allNews.page}`);
-      
-      console.log(`ultima pagina consultada de ${this.newSelected}NewsStorage: ${this.pageScroll}`);
-
-      console.log(`Ultima pagina desde local storage ${this.newSelected}NewsStorage: ${localStorage.getItem(`${this.newSelected}lastPage`)}`);
-
       await this.allNews.hits.forEach((e:any, i:number) => {
       
       if(e.author !== null && e.story_title !== null && e.story_url !== null && e.created_at !== null){
@@ -103,7 +91,6 @@ export class AppComponent {
       
     });
 
-    console.log(`${this.allNews.hitsPerPage}`);
 
     localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.filterNews));
 
@@ -118,8 +105,7 @@ export class AppComponent {
     }
 
     }
-    
-
+  
   }
 
   showAllNews(){
@@ -146,18 +132,6 @@ export class AppComponent {
       this.allNewsShow = false;
       this.favNewsShow = true;
     }
-    /* await newsToFilterFav.forEach((e:any) => {
-      if(e.points){
-        this.filterFav.push(e);
-      }
-    })
-    if(this.newSelected !== 'Select your news'){
-
-      
-      this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]" );
-      this.allNewsShow = false;
-      this.favNewsShow = true;
-    } */
 
   }
 
@@ -182,26 +156,14 @@ export class AppComponent {
     ? Number(localStorage.getItem(`${this.newSelected}lastIndex`))
     : 0;
       
-    
+
     this.filterNews = [];
 
     this.allNews  = await this.newsService.consultingNews(this.newSelected, this.pageScroll).toPromise();
 
     this.pageUltState = this.allNews.page;
 
-    this.pageUltState++;
-
-    console.clear();
-
-    console.log(this.allNews);
-
-    console.log(`elementos de ${this.newSelected}NewsStorage: ${(JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")).length}`);
-
-    console.log(`pagina consultada de ${this.newSelected}NewsStorage: ${this.allNews.page}`);
-
-    console.log(`Ultima pagina desde local storage ${this.newSelected}NewsStorage: ${localStorage.getItem(`${this.newSelected}lastPage`)}`);
-
-    
+    this.pageUltState++; 
 
     await this.allNews.hits.forEach((e:any, i:number) => {
 
@@ -219,6 +181,7 @@ export class AppComponent {
       localStorage.setItem(`${this.newSelected}lastPage`, `${this.pageScroll}`);
       localStorage.setItem(`${this.newSelected}lastIndex`, `${this.indexInsert}`);
       localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.filterNews));
+      localStorage.setItem(`selectfilter`, `${this.newSelected}`);
       
     }
     
@@ -242,8 +205,6 @@ export class AppComponent {
       this.modifiedNews = [];
 
       let newsToModify =  JSON.parse(localStorage.getItem(`${this.newSelected}NewsStorage`) || "[] ");
-
-      
 
       await newsToModify.forEach( (e:any, index:number) => {
         
@@ -275,42 +236,6 @@ export class AppComponent {
         this.showFavNews();
       }
       
-      
-    }
-
-    async removeFavorite(value:any, i:number, e:Event){
-
-      e.preventDefault();
-
-      this.unFilterFav = [];
-
-      let newsToModify =  JSON.parse(localStorage.getItem(`${this.newSelected}NewsStorage`) || "[] ");
-
-      await newsToModify.forEach((e:any) => {
-
-        if(e.created_at_i === value.created_at_i){
-          
-          if(e.fav === false){
-            e.fav = true; 
-          }
-          else{
-            e.fav = false;
-          }
-        }
-
-        this.unFilterFav.push(e);
-
-      })
-
-      localStorage.setItem(`${this.newSelected}FavsStorage`, JSON.stringify(this.unFilterFav));
-
-      this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
-
-      if(this.allNewsShow === false && this.favNewsShow === true){
-        
-        this.showFavNews();
-        
-      }
       
     }
     
