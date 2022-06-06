@@ -16,7 +16,7 @@ export class AppComponent {
   pageUltStateA:number = 1;
   pageUltStateR:number = 1;
   pageUltStateV:number = 1;
-  indexInsert: number = 0;
+  indexInsert: number = 0;//propiedad que se va insertar que nos ayudara a remover los favoritos
   newSelected:string = 'Select your news';
   allNews!:any;
   filterNews:any[] = [];
@@ -61,7 +61,13 @@ export class AppComponent {
             ? this.pageUltStateR = this.pageUltState
             : (this.newSelected === 'vuejs')
               ? this.pageUltStateV = this.pageUltState
-              : 1
+              : 1;
+      
+      this.indexInsert =
+      ((JSON.parse( localStorage.getItem(`${this.newSelected}lastIndex`) || "[]")).length  === 0)
+        ?1
+        :(JSON.parse( localStorage.getItem(`${this.newSelected}lastIndex`) || "[]"))
+
 
       localStorage.setItem(`${this.newSelected}lastPage`, `${this.pageScroll}`);  
 
@@ -88,7 +94,9 @@ export class AppComponent {
       
       if(e.author !== null && e.story_title !== null && e.story_url !== null && e.created_at !== null){
         
+        e.indexFront = this.indexInsert;
         this.filterNews.push(e);
+        this.indexInsert++;
         
       }
       
@@ -101,7 +109,7 @@ export class AppComponent {
     if(this.allNewsShow === true && this.favNewsShow === false){
 
       this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
-      
+      localStorage.setItem(`${this.newSelected}lastIndex`, `${this.indexInsert}`);
     }
     else{
       this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]" );
@@ -152,7 +160,6 @@ export class AppComponent {
   }
 
   async changeNews(){
-
     
     this.pageScroll =
     ((JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")).length  === 0)
@@ -168,6 +175,10 @@ export class AppComponent {
     this.pageScroll = (localStorage.getItem(`${this.newSelected}lastPage`) !== null)
       ? Number(localStorage.getItem(`${this.newSelected}lastPage`))
       : 1;
+    
+    this.indexInsert = (localStorage.getItem(`${this.newSelected}lastIndex`) !== null)
+    ? Number(localStorage.getItem(`${this.newSelected}lastIndex`))
+    : 0;
       
     this.filterNews = [];
 
@@ -193,15 +204,16 @@ export class AppComponent {
 
       
       if(e.author !== null && e.story_title !== null && e.story_url !== null && e.created_at !== null){
-        
+        e.indexFront = this.indexInsert;
         this.filterNews.push(e);
-        
+        this.indexInsert++;
       }
       
     });
     if(localStorage.getItem(`${this.newSelected}NewsStorage`) === null && this.newSelected !== 'Select your news'){
 
       localStorage.setItem(`${this.newSelected}lastPage`, `${this.pageScroll}`);
+      localStorage.setItem(`${this.newSelected}lastIndex`, `${this.indexInsert}`);
       localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.filterNews));
       
     }
@@ -213,7 +225,7 @@ export class AppComponent {
     }
     else{
       this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]" );
-      
+      this.showFavNews();
     }
 
   }
@@ -227,11 +239,12 @@ export class AppComponent {
 
       let newsToModify =  JSON.parse(localStorage.getItem(`${this.newSelected}NewsStorage`) || "[] ");
 
+      
+
       await newsToModify.forEach( (e:any, index:number) => {
         
-        console.log(value.indexFront);
         
-        if(index === i){
+        if(value.indexFront === index){
           
           if(e.points === null){
             e.points = true; 
