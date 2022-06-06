@@ -16,7 +16,7 @@ export class AppComponent {
   pageUltStateA:number = 1;
   pageUltStateR:number = 1;
   pageUltStateV:number = 1;
-  indexInsert: number = 0;//propiedad que se va insertar que nos ayudara a remover los favoritos
+  indexInsert: number = 0;
   newSelected:string = 'Select your news';
   allNews!:any;
   filterNews:any[] = [];
@@ -54,14 +54,14 @@ export class AppComponent {
 
       this.pageScroll =
       ((JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]")).length  === 0)
-        ?this.pageUltState = 1
+        ?this.pageUltState = 0
         :(this.newSelected === 'angular')
           ? this.pageUltStateA = this.pageUltState
           :(this.newSelected === 'reactjs')
             ? this.pageUltStateR = this.pageUltState
             : (this.newSelected === 'vuejs')
               ? this.pageUltStateV = this.pageUltState
-              : 1;
+              : 0;
       
       this.indexInsert =
       ((JSON.parse( localStorage.getItem(`${this.newSelected}lastIndex`) || "[]")).length  === 0)
@@ -139,8 +139,9 @@ export class AppComponent {
 
     
     if(this.newSelected !== 'Select your news'){
-      console.log(newsToFilterFav.filter((e:any) => e.points === true));
       this.filterNews = newsToFilterFav.filter((e:any) => e.points === true);
+      localStorage.setItem(`${this.newSelected}FavsStorage`, JSON.stringify(this.filterNews));
+      this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[] ");
       this.allNewsShow = false;
       this.favNewsShow = true;
     }
@@ -151,7 +152,7 @@ export class AppComponent {
     })
     if(this.newSelected !== 'Select your news'){
 
-      localStorage.setItem(`${this.newSelected}FavsStorage`, JSON.stringify(this.filterFav));
+      
       this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]" );
       this.allNewsShow = false;
       this.favNewsShow = true;
@@ -170,11 +171,11 @@ export class AppComponent {
           ? this.pageUltState = this.pageUltStateR
           : (this.newSelected === 'vuejs')
             ? this.pageUltState = this.pageUltStateV
-            : 1
+            : 0
 
     this.pageScroll = (localStorage.getItem(`${this.newSelected}lastPage`) !== null)
       ? Number(localStorage.getItem(`${this.newSelected}lastPage`))
-      : 1;
+      : 0;
     
     this.indexInsert = (localStorage.getItem(`${this.newSelected}lastIndex`) !== null)
     ? Number(localStorage.getItem(`${this.newSelected}lastIndex`))
