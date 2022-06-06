@@ -46,7 +46,7 @@
           <div class="title-new">
             <p>
               <img src="../assets/clock.svg" alt="clock">
-              <span>{{filterNew.created_at}} by {{filterNew.author}}</span>
+              <span>{{filterNew.created_at}} by {{filterNew.author}} nro :{{ind}}</span>
             </p>
           </div>
           <div class="description-new">
@@ -57,7 +57,7 @@
           <p>
             <span>
               <img *ngIf="filterNew.points === null" src="../assets/heart-empty.svg" alt="" (click) = "addFavorite(filterNew, ind, $event)">
-              <img *ngIf="filterNew.points !== null" src="../assets/heart-full.svg" alt="" (click) = "removeFavorite(filterNew, ind, $event)">
+              <img *ngIf="filterNew.points !== null" src="../assets/heart-full.svg" alt="" (click) = "addFavorite(filterNew, ind, $event)">
             </span>
           </p>
         </div>

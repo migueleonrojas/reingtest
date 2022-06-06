@@ -1,6 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject } from '@angular/core';
 import { NewsService } from 'src/services/select-news.services'
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,6 +16,7 @@ export class AppComponent {
   pageUltStateA:number = 1;
   pageUltStateR:number = 1;
   pageUltStateV:number = 1;
+  indexInsert: number = 0;
   newSelected:string = 'Select your news';
   allNews!:any;
   filterNews:any[] = [];
@@ -23,12 +26,12 @@ export class AppComponent {
   allNewsShow:boolean = true;
   favNewsShow:boolean = false;
   showButton:boolean = false;
-  private scrollHeight = 500;
+  private scrollHeight = 300;
   constructor(
     private newsService:NewsService,
     @Inject(DOCUMENT) private document:Document
   ){
-
+    
   }
 
   @HostListener('window:scroll')
@@ -47,8 +50,6 @@ export class AppComponent {
 
     if(this.pageScroll >= this.allNews.nbPages){return false}
 
-    
-    
     if(this.allNewsShow === true){
 
       this.pageScroll =
@@ -87,9 +88,8 @@ export class AppComponent {
       
       if(e.author !== null && e.story_title !== null && e.story_url !== null && e.created_at !== null){
         
-        
         this.filterNews.push(e);
-
+        
       }
       
     });
@@ -123,13 +123,20 @@ export class AppComponent {
     
   }
 
-  showFavNews(){
+  async showFavNews(){
 
     this.filterFav = [];
     this.filterNews = [];
     let newsToFilterFav =  JSON.parse(localStorage.getItem(`${this.newSelected}NewsStorage`) || "[] ");
 
-    newsToFilterFav.forEach((e:any) => {
+    
+    if(this.newSelected !== 'Select your news'){
+      console.log(newsToFilterFav.filter((e:any) => e.points === true));
+      this.filterNews = newsToFilterFav.filter((e:any) => e.points === true);
+      this.allNewsShow = false;
+      this.favNewsShow = true;
+    }
+    /* await newsToFilterFav.forEach((e:any) => {
       if(e.points){
         this.filterFav.push(e);
       }
@@ -140,7 +147,7 @@ export class AppComponent {
       this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[]" );
       this.allNewsShow = false;
       this.favNewsShow = true;
-    }
+    } */
 
   }
 
@@ -180,14 +187,15 @@ export class AppComponent {
 
     console.log(`Ultima pagina desde local storage ${this.newSelected}NewsStorage: ${localStorage.getItem(`${this.newSelected}lastPage`)}`);
 
-  
+    
 
-    this.allNews.hits.forEach((e:any, i:number) => {
+    await this.allNews.hits.forEach((e:any, i:number) => {
+
       
       if(e.author !== null && e.story_title !== null && e.story_url !== null && e.created_at !== null){
         
         this.filterNews.push(e);
-
+        
       }
       
     });
@@ -211,16 +219,20 @@ export class AppComponent {
   }
 
 
-  addFavorite(value:Object, i:number, e:Event){
+  async addFavorite(value:any, i:number, ev:Event){
 
-      e.preventDefault();
+      ev.preventDefault();
 
       this.modifiedNews = [];
 
       let newsToModify =  JSON.parse(localStorage.getItem(`${this.newSelected}NewsStorage`) || "[] ");
 
-      newsToModify.forEach( (e:any, index:number) => {
+      await newsToModify.forEach( (e:any, index:number) => {
+        
+        console.log(value.indexFront);
+        
         if(index === i){
+          
           if(e.points === null){
             e.points = true; 
           }
@@ -233,15 +245,23 @@ export class AppComponent {
         this.modifiedNews.push(e)
       })
 
-      localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.modifiedNews));
+      if(this.allNewsShow === true && this.favNewsShow === false){
+        localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.modifiedNews));
 
-      this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
+        this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
+      }
+      else{
+        localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.modifiedNews));
+
+        this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
+
+        this.showFavNews();
+      }
+      
       
     }
 
-    removeFavorite(value:any, i:number, e:Event){
-
-      console.log(i);
+    async removeFavorite(value:any, i:number, e:Event){
 
       e.preventDefault();
 
@@ -249,9 +269,10 @@ export class AppComponent {
 
       let newsToModify =  JSON.parse(localStorage.getItem(`${this.newSelected}NewsStorage`) || "[] ");
 
-      newsToModify.forEach((e:any) => {
+      await newsToModify.forEach((e:any) => {
 
-        if(e.objectID === value.objectID){
+        if(e.created_at_i === value.created_at_i){
+          
           if(e.points === null){
             e.points = true; 
           }
@@ -264,12 +285,14 @@ export class AppComponent {
 
       })
 
-      localStorage.setItem(`${this.newSelected}NewsStorage`, JSON.stringify(this.unFilterFav));
+      localStorage.setItem(`${this.newSelected}FavsStorage`, JSON.stringify(this.unFilterFav));
 
       this.filterNews  =  JSON.parse( localStorage.getItem(`${this.newSelected}NewsStorage`) || "[]");
 
       if(this.allNewsShow === false && this.favNewsShow === true){
-        this.showFavNews()
+        
+        this.showFavNews();
+        
       }
       
     }

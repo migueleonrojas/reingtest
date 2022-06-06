@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 @NgModule({
   declarations: [
     AppComponent
@@ -16,7 +17,9 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
     FormsModule,
     HttpClientModule,
     NgxPaginationModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    SweetAlert2Module,
+    SweetAlert2Module.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
