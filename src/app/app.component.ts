@@ -95,6 +95,7 @@ export class AppComponent {
       if(e.author !== null && e.story_title !== null && e.story_url !== null && e.created_at !== null){
         
         e.indexFront = this.indexInsert;
+        e.fav = false;
         this.filterNews.push(e);
         this.indexInsert++;
         
@@ -139,7 +140,7 @@ export class AppComponent {
 
     
     if(this.newSelected !== 'Select your news'){
-      this.filterNews = newsToFilterFav.filter((e:any) => e.points === true);
+      this.filterNews = newsToFilterFav.filter((e:any) => e.fav === true);
       localStorage.setItem(`${this.newSelected}FavsStorage`, JSON.stringify(this.filterNews));
       this.filterNews = JSON.parse(localStorage.getItem(`${this.newSelected}FavsStorage`) || "[] ");
       this.allNewsShow = false;
@@ -181,6 +182,7 @@ export class AppComponent {
     ? Number(localStorage.getItem(`${this.newSelected}lastIndex`))
     : 0;
       
+    
     this.filterNews = [];
 
     this.allNews  = await this.newsService.consultingNews(this.newSelected, this.pageScroll).toPromise();
@@ -206,6 +208,7 @@ export class AppComponent {
       
       if(e.author !== null && e.story_title !== null && e.story_url !== null && e.created_at !== null){
         e.indexFront = this.indexInsert;
+        e.fav = false;
         this.filterNews.push(e);
         this.indexInsert++;
       }
@@ -247,11 +250,11 @@ export class AppComponent {
         
         if(value.indexFront === index){
           
-          if(e.points === null){
-            e.points = true; 
+          if(e.fav){
+            e.fav = false; 
           }
           else{
-            e.points = null;
+            e.fav = true;
           }
           
         }
@@ -287,11 +290,11 @@ export class AppComponent {
 
         if(e.created_at_i === value.created_at_i){
           
-          if(e.points === null){
-            e.points = true; 
+          if(e.fav === false){
+            e.fav = true; 
           }
           else{
-            e.points = null;
+            e.fav = false;
           }
         }
 

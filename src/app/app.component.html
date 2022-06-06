@@ -16,7 +16,7 @@
 
   <div class="selection">
 
-    <select name="news"  [(ngModel)]="newSelected" (change)="changeNews()">
+    <select *ngIf="allNewsShow" name="news"  [(ngModel)]="newSelected" (change)="changeNews()">
       <option value="Select your news">
         <span>Select your news</span> 
       </option>
@@ -56,8 +56,8 @@
         <div class="favorite" >
           <p>
             <span>
-              <img *ngIf="filterNew.points === null" src="../assets/heart-empty.svg" alt="" (click) = "addFavorite(filterNew, ind, $event)">
-              <img *ngIf="filterNew.points !== null" src="../assets/heart-full.svg" alt="" (click) = "addFavorite(filterNew, ind, $event)">
+              <img *ngIf="filterNew.fav === false" src="../assets/heart-empty.svg" alt="" (click) = "addFavorite(filterNew, ind, $event)">
+              <img *ngIf="filterNew.fav" src="../assets/heart-full.svg" alt="" (click) = "addFavorite(filterNew, ind, $event)">
             </span>
           </p>
         </div>
