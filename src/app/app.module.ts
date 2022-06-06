@@ -7,9 +7,11 @@ import { HttpClientModule } from '@angular/common/http';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { DatePipe } from 'src/pipes/date.pipe'
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DatePipe
   ],
   imports: [
     BrowserModule,
