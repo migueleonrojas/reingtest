@@ -48,4 +48,6 @@ Vue select:
 Vue favorites:
 ![image](https://user-images.githubusercontent.com/84646014/172454131-dffee681-f2ec-4c16-ad62-daac0eded795.png)
 
+You can add or remove favorites just by clicking on the heart
 
+Each card has a link to another page
