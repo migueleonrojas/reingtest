@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-
+//clase que contienen los servicios que realizan los cruds al esquema del admin
 export class NewsService {
 
   constructor(private httpClient: HttpClient) { }
