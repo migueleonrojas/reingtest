@@ -45,7 +45,7 @@ Vue select:
 ![image](https://user-images.githubusercontent.com/84646014/172454020-3e4ae45d-02a2-4cf0-ba05-eb020cb0cd44.png)
 
 
-React favorites:
+Vue favorites:
 ![image](https://user-images.githubusercontent.com/84646014/172454131-dffee681-f2ec-4c16-ad62-daac0eded795.png)
 
 
