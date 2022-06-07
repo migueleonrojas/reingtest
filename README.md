@@ -29,3 +29,23 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 View general
 ![image](https://user-images.githubusercontent.com/84646014/172453240-4f377694-6bee-4429-913d-4f6839026e3e.png)
 
+Angular select:
+![image](https://user-images.githubusercontent.com/84646014/172453481-84ccc04d-ce11-445c-9894-f5e8681f6ef7.png)
+
+Angular favorites:
+![image](https://user-images.githubusercontent.com/84646014/172453582-da90ffc7-5151-4482-afc4-bffc5cd2b602.png)
+
+React select:
+![image](https://user-images.githubusercontent.com/84646014/172453769-995bf62c-1e59-45da-be15-6c8275a14329.png)
+
+React favorites:
+![image](https://user-images.githubusercontent.com/84646014/172453861-a4333d68-c45e-45b8-bd93-251306dd31ab.png)
+
+Vue select:
+![image](https://user-images.githubusercontent.com/84646014/172454020-3e4ae45d-02a2-4cf0-ba05-eb020cb0cd44.png)
+
+
+React favorites:
+![image](https://user-images.githubusercontent.com/84646014/172454131-dffee681-f2ec-4c16-ad62-daac0eded795.png)
+
+
